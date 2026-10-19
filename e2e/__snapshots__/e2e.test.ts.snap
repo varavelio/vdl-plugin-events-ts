@@ -8,16 +8,16 @@ exports[`VDL Plugin TS events e2e > executes fixture: complexpayload > events.ts
  */
 export interface VDLEventCatalog {
   /**
-   * Metadata for the ComplexPayloadEvent event.
+   * Metadata for the \`ComplexPayloadEvent\` event.
    *
-   * Subject: audit.{tenantId}.payload.created
+   * Subject: \`audit.{tenantId}.payload.created\`
    */
   ComplexPayloadEvent: {
-    /** Event payload type name. */
+    /** Event name: \`ComplexPayloadEvent\` */
     name: string;
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`audit.{tenantId}.payload.created\` */
     subjectTemplate: string;
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`audit.{tenantId}.payload.created\` */
     buildSubject: (tenantId: string) => string;
   };
 }
@@ -27,16 +27,16 @@ export interface VDLEventCatalog {
  */
 export const VDLEvents: VDLEventCatalog = {
   /**
-   * Metadata for the ComplexPayloadEvent event.
+   * Metadata for the \`ComplexPayloadEvent\` event.
    *
-   * Subject: audit.{tenantId}.payload.created
+   * Subject: \`audit.{tenantId}.payload.created\`
    */
   ComplexPayloadEvent: {
-    /** Event payload type name. */
+    /** Event name: \`ComplexPayloadEvent\` */
     name: "ComplexPayloadEvent",
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`audit.{tenantId}.payload.created\` */
     subjectTemplate: "audit.{tenantId}.payload.created",
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`audit.{tenantId}.payload.created\` */
     buildSubject(tenantId: string): string {
       return \`audit.\${tenantId}.payload.created\`;
     },
@@ -52,16 +52,16 @@ exports[`VDL Plugin TS events e2e > executes fixture: customoutfile > billing-ev
  */
 export interface VDLEventCatalog {
   /**
-   * Metadata for the InvoicePaidEvent event.
+   * Metadata for the \`InvoicePaidEvent\` event.
    *
-   * Subject: billing.invoice_paid.{invoiceId}
+   * Subject: \`billing.invoice_paid.{invoiceId}\`
    */
   InvoicePaidEvent: {
-    /** Event payload type name. */
+    /** Event name: \`InvoicePaidEvent\` */
     name: string;
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`billing.invoice_paid.{invoiceId}\` */
     subjectTemplate: string;
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`billing.invoice_paid.{invoiceId}\` */
     buildSubject: (invoiceId: number) => string;
   };
 }
@@ -71,16 +71,16 @@ export interface VDLEventCatalog {
  */
 export const VDLEvents: VDLEventCatalog = {
   /**
-   * Metadata for the InvoicePaidEvent event.
+   * Metadata for the \`InvoicePaidEvent\` event.
    *
-   * Subject: billing.invoice_paid.{invoiceId}
+   * Subject: \`billing.invoice_paid.{invoiceId}\`
    */
   InvoicePaidEvent: {
-    /** Event payload type name. */
+    /** Event name: \`InvoicePaidEvent\` */
     name: "InvoicePaidEvent",
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`billing.invoice_paid.{invoiceId}\` */
     subjectTemplate: "billing.invoice_paid.{invoiceId}",
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`billing.invoice_paid.{invoiceId}\` */
     buildSubject(invoiceId: number): string {
       return \`billing.invoice_paid.\${invoiceId}\`;
     },
@@ -96,46 +96,46 @@ exports[`VDL Plugin TS events e2e > executes fixture: deprecated > events.ts 1`]
  */
 export interface VDLEventCatalog {
   /**
-   * Metadata for the SystemReadyEvent event.
+   * Metadata for the \`SystemReadyEvent\` event.
    *
-   * Subject: system.ready
+   * Subject: \`system.ready\`
    */
   SystemReadyEvent: {
-    /** Event payload type name. */
+    /** Event name: \`SystemReadyEvent\` */
     name: string;
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`system.ready\` */
     subjectTemplate: string;
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`system.ready\` */
     buildSubject: () => string;
   };
   /**
-   * Metadata for the UserCreatedEvent event.
+   * Metadata for the \`UserCreatedEvent\` event.
    *
-   * Subject: auth.user_created.{userId}
+   * Subject: \`auth.user_created.{userId}\`
    *
    * @deprecated Use UserCreatedV2 instead.
    */
   UserCreatedEvent: {
-    /** Event payload type name. */
+    /** Event name: \`UserCreatedEvent\` */
     name: string;
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`auth.user_created.{userId}\` */
     subjectTemplate: string;
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`auth.user_created.{userId}\` */
     buildSubject: (userId: string) => string;
   };
   /**
-   * Metadata for the UserDeletedEvent event.
+   * Metadata for the \`UserDeletedEvent\` event.
    *
-   * Subject: auth.user_deleted.{userId}
+   * Subject: \`auth.user_deleted.{userId}\`
    *
    * @deprecated This event is deprecated.
    */
   UserDeletedEvent: {
-    /** Event payload type name. */
+    /** Event name: \`UserDeletedEvent\` */
     name: string;
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`auth.user_deleted.{userId}\` */
     subjectTemplate: string;
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`auth.user_deleted.{userId}\` */
     buildSubject: (userId: string) => string;
   };
 }
@@ -145,50 +145,50 @@ export interface VDLEventCatalog {
  */
 export const VDLEvents: VDLEventCatalog = {
   /**
-   * Metadata for the SystemReadyEvent event.
+   * Metadata for the \`SystemReadyEvent\` event.
    *
-   * Subject: system.ready
+   * Subject: \`system.ready\`
    */
   SystemReadyEvent: {
-    /** Event payload type name. */
+    /** Event name: \`SystemReadyEvent\` */
     name: "SystemReadyEvent",
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`system.ready\` */
     subjectTemplate: "system.ready",
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`system.ready\` */
     buildSubject(): string {
       return "system.ready";
     },
   },
   /**
-   * Metadata for the UserCreatedEvent event.
+   * Metadata for the \`UserCreatedEvent\` event.
    *
-   * Subject: auth.user_created.{userId}
+   * Subject: \`auth.user_created.{userId}\`
    *
    * @deprecated Use UserCreatedV2 instead.
    */
   UserCreatedEvent: {
-    /** Event payload type name. */
+    /** Event name: \`UserCreatedEvent\` */
     name: "UserCreatedEvent",
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`auth.user_created.{userId}\` */
     subjectTemplate: "auth.user_created.{userId}",
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`auth.user_created.{userId}\` */
     buildSubject(userId: string): string {
       return \`auth.user_created.\${userId}\`;
     },
   },
   /**
-   * Metadata for the UserDeletedEvent event.
+   * Metadata for the \`UserDeletedEvent\` event.
    *
-   * Subject: auth.user_deleted.{userId}
+   * Subject: \`auth.user_deleted.{userId}\`
    *
    * @deprecated This event is deprecated.
    */
   UserDeletedEvent: {
-    /** Event payload type name. */
+    /** Event name: \`UserDeletedEvent\` */
     name: "UserDeletedEvent",
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`auth.user_deleted.{userId}\` */
     subjectTemplate: "auth.user_deleted.{userId}",
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`auth.user_deleted.{userId}\` */
     buildSubject(userId: string): string {
       return \`auth.user_deleted.\${userId}\`;
     },
@@ -204,16 +204,16 @@ exports[`VDL Plugin TS events e2e > executes fixture: noplaceholders > events.ts
  */
 export interface VDLEventCatalog {
   /**
-   * Metadata for the SystemReadyEvent event.
+   * Metadata for the \`SystemReadyEvent\` event.
    *
-   * Subject: system.ready
+   * Subject: \`system.ready\`
    */
   SystemReadyEvent: {
-    /** Event payload type name. */
+    /** Event name: \`SystemReadyEvent\` */
     name: string;
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`system.ready\` */
     subjectTemplate: string;
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`system.ready\` */
     buildSubject: () => string;
   };
 }
@@ -223,16 +223,16 @@ export interface VDLEventCatalog {
  */
 export const VDLEvents: VDLEventCatalog = {
   /**
-   * Metadata for the SystemReadyEvent event.
+   * Metadata for the \`SystemReadyEvent\` event.
    *
-   * Subject: system.ready
+   * Subject: \`system.ready\`
    */
   SystemReadyEvent: {
-    /** Event payload type name. */
+    /** Event name: \`SystemReadyEvent\` */
     name: "SystemReadyEvent",
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`system.ready\` */
     subjectTemplate: "system.ready",
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`system.ready\` */
     buildSubject(): string {
       return "system.ready";
     },
@@ -248,16 +248,16 @@ exports[`VDL Plugin TS events e2e > executes fixture: primitiveplaceholders > ev
  */
 export interface VDLEventCatalog {
   /**
-   * Metadata for the PrimitiveSubjectEvent event.
+   * Metadata for the \`PrimitiveSubjectEvent\` event.
    *
-   * Subject: metrics.{name}.{count}.{amount}.{active}.{occurredAt}
+   * Subject: \`metrics.{name}.{count}.{amount}.{active}.{occurredAt}\`
    */
   PrimitiveSubjectEvent: {
-    /** Event payload type name. */
+    /** Event name: \`PrimitiveSubjectEvent\` */
     name: string;
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`metrics.{name}.{count}.{amount}.{active}.{occurredAt}\` */
     subjectTemplate: string;
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`metrics.{name}.{count}.{amount}.{active}.{occurredAt}\` */
     buildSubject: (name: string, count: number, amount: number, active: boolean, occurredAt: Date) => string;
   };
 }
@@ -267,16 +267,16 @@ export interface VDLEventCatalog {
  */
 export const VDLEvents: VDLEventCatalog = {
   /**
-   * Metadata for the PrimitiveSubjectEvent event.
+   * Metadata for the \`PrimitiveSubjectEvent\` event.
    *
-   * Subject: metrics.{name}.{count}.{amount}.{active}.{occurredAt}
+   * Subject: \`metrics.{name}.{count}.{amount}.{active}.{occurredAt}\`
    */
   PrimitiveSubjectEvent: {
-    /** Event payload type name. */
+    /** Event name: \`PrimitiveSubjectEvent\` */
     name: "PrimitiveSubjectEvent",
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`metrics.{name}.{count}.{amount}.{active}.{occurredAt}\` */
     subjectTemplate: "metrics.{name}.{count}.{amount}.{active}.{occurredAt}",
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`metrics.{name}.{count}.{amount}.{active}.{occurredAt}\` */
     buildSubject(name: string, count: number, amount: number, active: boolean, occurredAt: Date): string {
       return \`metrics.\${name}.\${count}.\${amount}.\${active}.\${occurredAt.toISOString()}\`;
     },
@@ -292,16 +292,16 @@ exports[`VDL Plugin TS events e2e > executes fixture: repeatedplaceholders > eve
  */
 export interface VDLEventCatalog {
   /**
-   * Metadata for the TenantAuditCreatedEvent event.
+   * Metadata for the \`TenantAuditCreatedEvent\` event.
    *
-   * Subject: audit.{tenantId}.users.{tenantId}.created
+   * Subject: \`audit.{tenantId}.users.{tenantId}.created\`
    */
   TenantAuditCreatedEvent: {
-    /** Event payload type name. */
+    /** Event name: \`TenantAuditCreatedEvent\` */
     name: string;
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`audit.{tenantId}.users.{tenantId}.created\` */
     subjectTemplate: string;
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`audit.{tenantId}.users.{tenantId}.created\` */
     buildSubject: (tenantId: string) => string;
   };
 }
@@ -311,16 +311,16 @@ export interface VDLEventCatalog {
  */
 export const VDLEvents: VDLEventCatalog = {
   /**
-   * Metadata for the TenantAuditCreatedEvent event.
+   * Metadata for the \`TenantAuditCreatedEvent\` event.
    *
-   * Subject: audit.{tenantId}.users.{tenantId}.created
+   * Subject: \`audit.{tenantId}.users.{tenantId}.created\`
    */
   TenantAuditCreatedEvent: {
-    /** Event payload type name. */
+    /** Event name: \`TenantAuditCreatedEvent\` */
     name: "TenantAuditCreatedEvent",
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`audit.{tenantId}.users.{tenantId}.created\` */
     subjectTemplate: "audit.{tenantId}.users.{tenantId}.created",
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`audit.{tenantId}.users.{tenantId}.created\` */
     buildSubject(tenantId: string): string {
       return \`audit.\${tenantId}.users.\${tenantId}.created\`;
     },
@@ -336,16 +336,16 @@ exports[`VDL Plugin TS events e2e > executes fixture: simpletest > events.ts 1`]
  */
 export interface VDLEventCatalog {
   /**
-   * Metadata for the UserCreatedEvent event.
+   * Metadata for the \`UserCreatedEvent\` event.
    *
-   * Subject: auth.user_created.{userId}
+   * Subject: \`auth.user_created.{userId}\`
    */
   UserCreatedEvent: {
-    /** Event payload type name. */
+    /** Event name: \`UserCreatedEvent\` */
     name: string;
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`auth.user_created.{userId}\` */
     subjectTemplate: string;
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`auth.user_created.{userId}\` */
     buildSubject: (userId: string) => string;
   };
 }
@@ -355,16 +355,16 @@ export interface VDLEventCatalog {
  */
 export const VDLEvents: VDLEventCatalog = {
   /**
-   * Metadata for the UserCreatedEvent event.
+   * Metadata for the \`UserCreatedEvent\` event.
    *
-   * Subject: auth.user_created.{userId}
+   * Subject: \`auth.user_created.{userId}\`
    */
   UserCreatedEvent: {
-    /** Event payload type name. */
+    /** Event name: \`UserCreatedEvent\` */
     name: "UserCreatedEvent",
-    /** Literal subject template from the \`@event\` annotation. */
+    /** Event subject: \`auth.user_created.{userId}\` */
     subjectTemplate: "auth.user_created.{userId}",
-    /** Typed subject builder for this event. */
+    /** Event subject builder: \`auth.user_created.{userId}\` */
     buildSubject(userId: string): string {
       return \`auth.user_created.\${userId}\`;
     },

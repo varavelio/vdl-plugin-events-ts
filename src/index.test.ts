@@ -161,9 +161,12 @@ describe("generate", () => {
     expect(file.content).toContain(
       'subjectTemplate: "auth.user_created.{userId}",',
     );
-    expect(file.content).toContain("/** Event payload type name. */");
+    expect(file.content).toContain("/** Event name: `UserCreatedEvent` */");
     expect(file.content).toContain(
-      "/** Typed subject builder for this event. */",
+      "/** Event subject: `auth.user_created.{userId}` */",
+    );
+    expect(file.content).toContain(
+      "/** Event subject builder: `auth.user_created.{userId}` */",
     );
     expect(file.content).not.toContain("export interface UserCreatedEvent");
     expect(file.content).not.toContain("export type UserCreatedEvent");

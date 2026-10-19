@@ -337,13 +337,13 @@ function renderCatalogInterface(events) {
   for (const event of events) {
     lines.push(...renderCatalogEntryDoc(event, "  "));
     lines.push(`  ${event.name}: {`);
-    lines.push("    /** Event payload type name. */");
+    lines.push(`    /** Event name: \`${event.name}\` */`);
     lines.push("    name: string;");
-    lines.push(
-      "    /** Literal subject template from the `@event` annotation. */"
-    );
+    lines.push(`    /** Event subject: \`${event.subjectTemplate}\` */`);
     lines.push("    subjectTemplate: string;");
-    lines.push("    /** Typed subject builder for this event. */");
+    lines.push(
+      `    /** Event subject builder: \`${event.subjectTemplate}\` */`
+    );
     lines.push(`    buildSubject: (${renderSubjectParams(event)}) => string;`);
     lines.push("  };");
   }
@@ -361,15 +361,15 @@ function renderCatalogValue(events) {
   for (const event of events) {
     lines.push(...renderCatalogEntryDoc(event, "  "));
     lines.push(`  ${event.name}: {`);
-    lines.push("    /** Event payload type name. */");
+    lines.push(`    /** Event name: \`${event.name}\` */`);
     lines.push(`    name: ${JSON.stringify(event.name)},`);
-    lines.push(
-      "    /** Literal subject template from the `@event` annotation. */"
-    );
+    lines.push(`    /** Event subject: \`${event.subjectTemplate}\` */`);
     lines.push(
       `    subjectTemplate: ${JSON.stringify(event.subjectTemplate)},`
     );
-    lines.push("    /** Typed subject builder for this event. */");
+    lines.push(
+      `    /** Event subject builder: \`${event.subjectTemplate}\` */`
+    );
     lines.push(`    buildSubject(${renderSubjectParams(event)}): string {`);
     lines.push(`      return ${renderSubjectExpression(event)};`);
     lines.push("    },");
@@ -383,9 +383,9 @@ function renderCatalogEntryDoc(event, indent) {
   var _a2;
   const lines = [
     `${indent}/**`,
-    `${indent} * Metadata for the ${event.name} event.`,
+    `${indent} * Metadata for the \`${event.name}\` event.`,
     `${indent} *`,
-    `${indent} * Subject: ${event.subjectTemplate}`
+    `${indent} * Subject: \`${event.subjectTemplate}\``
   ];
   if (event.isDeprecated) {
     lines.push(
