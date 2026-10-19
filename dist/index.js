@@ -323,11 +323,6 @@ function renderTsFile(events) {
       ...renderCatalogValue(events)
     );
   }
-  for (const [index, event] of events.entries()) {
-    lines.push("", ...renderSubjectBuilder(event));
-    if (index < events.length - 1) {
-    }
-  }
   return `${lines.join("\n")}
 `;
 }
@@ -366,11 +361,18 @@ function renderCatalogValue(events) {
   for (const event of events) {
     lines.push(...renderCatalogEntryDoc(event, "  "));
     lines.push(`  ${event.name}: {`);
+    lines.push("    /** Event payload type name. */");
     lines.push(`    name: ${JSON.stringify(event.name)},`);
+    lines.push(
+      "    /** Literal subject template from the `@event` annotation. */"
+    );
     lines.push(
       `    subjectTemplate: ${JSON.stringify(event.subjectTemplate)},`
     );
-    lines.push(`    buildSubject: build${event.name}Subject,`);
+    lines.push("    /** Typed subject builder for this event. */");
+    lines.push(`    buildSubject(${renderSubjectParams(event)}): string {`);
+    lines.push(`      return ${renderSubjectExpression(event)};`);
+    lines.push("    },");
     lines.push("  },");
   }
   lines.push("};");
@@ -395,30 +397,6 @@ function renderCatalogEntryDoc(event, indent) {
   return lines;
 }
 __name(renderCatalogEntryDoc, "renderCatalogEntryDoc");
-function renderSubjectBuilder(event) {
-  var _a2;
-  const params = renderSubjectParams(event);
-  const lines = [
-    "/**",
-    ` * Builds the subject for the ${event.name} event.`,
-    " *",
-    ` * Subject: ${event.subjectTemplate}`
-  ];
-  if (event.isDeprecated) {
-    lines.push(
-      " *",
-      ` * @deprecated ${(_a2 = event.deprecationMessage) != null ? _a2 : "This event is deprecated."}`
-    );
-  }
-  lines.push(
-    " */",
-    `function build${event.name}Subject(${params}): string {`,
-    `  return ${renderSubjectExpression(event)};`,
-    "}"
-  );
-  return lines;
-}
-__name(renderSubjectBuilder, "renderSubjectBuilder");
 function renderSubjectParams(event) {
   return event.placeholders.map((placeholder) => {
     return `${placeholder.field}: ${renderTypeScriptType(placeholder.primitiveType)}`;

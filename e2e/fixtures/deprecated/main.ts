@@ -25,8 +25,8 @@ ok(
   "missing custom deprecation message",
 );
 ok(
-  generated.includes("function buildUserDeletedEventSubject("),
-  "private builder must exist",
+  generated.includes("buildSubject(userId: string): string {"),
+  "inline builder must exist",
 );
-ok(!generated.includes("export function build"), "builders must stay private");
+ok(!generated.includes("function build"), "no separate builder functions");
 ok(!generated.includes("VDLEventMetadata"), "no metadata type");

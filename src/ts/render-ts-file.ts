@@ -16,14 +16,6 @@ export function renderTsFile(events: EventModel[]): string {
     );
   }
 
-  for (const [index, event] of events.entries()) {
-    lines.push("", ...renderSubjectBuilder(event));
-
-    if (index < events.length - 1) {
-      // Blank line separation is handled by the next builder prefix.
-    }
-  }
-
   return `${lines.join("\n")}\n`;
 }
 
@@ -57,7 +49,7 @@ function renderCatalogInterface(events: EventModel[]): string[] {
 }
 
 /**
- * Renders the generated event catalog value with buildSubject references.
+ * Renders the generated event catalog value with inline subject builders.
  */
 function renderCatalogValue(events: EventModel[]): string[] {
   const lines = [
@@ -70,11 +62,18 @@ function renderCatalogValue(events: EventModel[]): string[] {
   for (const event of events) {
     lines.push(...renderCatalogEntryDoc(event, "  "));
     lines.push(`  ${event.name}: {`);
+    lines.push("    /** Event payload type name. */");
     lines.push(`    name: ${JSON.stringify(event.name)},`);
+    lines.push(
+      "    /** Literal subject template from the `@event` annotation. */",
+    );
     lines.push(
       `    subjectTemplate: ${JSON.stringify(event.subjectTemplate)},`,
     );
-    lines.push(`    buildSubject: build${event.name}Subject,`);
+    lines.push("    /** Typed subject builder for this event. */");
+    lines.push(`    buildSubject(${renderSubjectParams(event)}): string {`);
+    lines.push(`      return ${renderSubjectExpression(event)};`);
+    lines.push("    },");
     lines.push("  },");
   }
 
@@ -101,34 +100,6 @@ function renderCatalogEntryDoc(event: EventModel, indent: string): string[] {
   }
 
   lines.push(`${indent} */`);
-  return lines;
-}
-
-/**
- * Renders one generated TypeScript subject builder for an event.
- */
-function renderSubjectBuilder(event: EventModel): string[] {
-  const params = renderSubjectParams(event);
-  const lines = [
-    "/**",
-    ` * Builds the subject for the ${event.name} event.`,
-    " *",
-    ` * Subject: ${event.subjectTemplate}`,
-  ];
-
-  if (event.isDeprecated) {
-    lines.push(
-      " *",
-      ` * @deprecated ${event.deprecationMessage ?? "This event is deprecated."}`,
-    );
-  }
-
-  lines.push(
-    " */",
-    `function build${event.name}Subject(${params}): string {`,
-    `  return ${renderSubjectExpression(event)};`,
-    "}",
-  );
   return lines;
 }
 

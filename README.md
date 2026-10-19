@@ -132,8 +132,7 @@ type UserCreatedEvent {
 
 ## What You Get
 
-- `build<Event>Subject`: exported typed subject builder per event
-- Per-event entries with `name`, `subjectTemplate`, and typed `buildSubject`
+- Per-event entries with documented `name`, `subjectTemplate`, and inline typed `buildSubject`
 - `VDLEventCatalog`: interface grouping per-event metadata by event name
 - `VDLEvents`: constant holding the fully typed event catalog
 
@@ -167,16 +166,16 @@ export const VDLEvents: VDLEventCatalog = {
   UserCreatedEvent: {
     name: "UserCreatedEvent",
     subjectTemplate: "auth.user_created.{userId}",
-    buildSubject: buildUserCreatedEventSubject,
+    buildSubject(userId: string): string {
+      return `auth.user_created.${userId}`;
+    },
   },
 };
-
-function buildUserCreatedEventSubject(userId: string): string {
-  return `auth.user_created.${userId}`;
-}
 ```
 
-Each catalog entry carries JSDoc with the event name and subject template. Deprecated events carry `@deprecated` tags. External access goes through the catalog's typed `buildSubject` fields only.
+Each catalog entry carries JSDoc with the event name and subject template.
+
+Deprecated events carry `@deprecated` tags.
 
 ## Type Mapping
 
