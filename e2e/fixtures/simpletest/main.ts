@@ -1,13 +1,16 @@
-import { ok } from "node:assert";
-import { readFileSync } from "node:fs";
-
-// This file is only a tiny example of extra fixture checks.
-// Keep files like this small and focused.
-
-const helloTxtGot = readFileSync("gen/hello.txt", "utf-8");
-const helloTxtExpected = "Hello from VDL Plugin";
+import { ok } from "node:assert/strict";
+import { buildUserCreatedEventSubject, VDLEvents } from "./gen/events.ts";
 
 ok(
-  helloTxtGot === helloTxtExpected,
-  `hello.txt content mismatch. Expected: "${helloTxtExpected}", got: "${helloTxtGot}"`,
+  buildUserCreatedEventSubject("u-1") === "auth.user_created.u-1",
+  "builder must interpolate userId",
+);
+ok(VDLEvents.UserCreatedEvent.name === "UserCreatedEvent", "catalog name");
+ok(
+  VDLEvents.UserCreatedEvent.subjectTemplate === "auth.user_created.{userId}",
+  "catalog subjectTemplate",
+);
+ok(
+  VDLEvents.UserCreatedEvent.buildSubject("u-2") === "auth.user_created.u-2",
+  "catalog buildSubject",
 );

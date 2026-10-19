@@ -1,0 +1,10 @@
+const config = {
+  version 1
+  plugins [
+    {
+      src "../../../dist/index.js"
+      schema "./schema.vdl"
+      outDir "./gen"
+    }
+  ]
+}
