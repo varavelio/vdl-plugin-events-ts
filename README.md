@@ -6,10 +6,10 @@
   />
 </p>
 
-<h1 align="center">VDL Plugin Template</h1>
+<h1 align="center">VDL TypeScript Events Plugin</h1>
 
 <p align="center">
-  Starter template for building a VDL plugin in TypeScript.
+  Generate TypeScript <strong>subject builders</strong> and a centralized <strong>event catalog</strong> from VDL <code>@event</code> types.
 </p>
 
 <p align="center">
@@ -27,126 +27,199 @@
   </a>
 </p>
 
-## What is included
+<p align="center">
+  Strictly follows <a href="https://vdl.varavel.com/docs/protocols/events/">VPP-4: Events</a>.
+</p>
 
-It includes the VDL plugin SDK, a small code generator, formatting and linting tools, a test setup, an included devcontainer, and a GitHub Actions workflow so you can go from idea to releasable plugin quickly.
+This plugin is event-focused.
 
-- `src/index.ts` with a minimal `definePlugin(...)` entrypoint.
-- [`@varavel/vdl-plugin-sdk`](https://github.com/varavelio/vdl-plugin-sdk) for typed plugin input/output, typed VDL IR, option helpers, and the `vdl-plugin` build/check CLI.
-- [`@varavel/gen`](https://github.com/varavelio/gen-ts) to make string-based code generation easier.
-- TypeScript configuration ready to go based on `@varavel/vdl-plugin-sdk/tsconfig.base.json`.
-- `Biome` and `dprint` for linting and formatting.
-- `Vitest` for tests.
-- A ready-to-use `.devcontainer/` with Node 26, useful CLI tools, and VS Code extensions for VDL, Biome, dprint, and Vitest.
-- A GitHub Actions workflow in `.github/workflows/ci.yaml` that runs `npm run ci` on pushes, pull requests, and manual triggers.
+It only generates code for types annotated with `@event`. Unannotated types are ignored.
 
-## Project layout
+It does **not** generate TypeScript payload models (types/enums/constants). Payload contracts are delegated to [`varavelio/vdl-plugin-ts`](https://github.com/varavelio/vdl-plugin-ts).
 
-- `.devcontainer/` reproducible development environment.
-- `.github/workflows/ci.yaml` CI pipeline.
-- `biome.json` JavaScript and TypeScript formatting/lint rules.
-- `dprint.json` formatting for Markdown, JSON, and YAML.
-- `src/index.ts` plugin source.
-- `dist/index.js` built plugin bundle consumed by VDL from GitHub releases.
+Use it when you want to:
 
-## Getting started
+- generate strongly typed subject builders for event routing keys
+- build routing subjects from validated placeholder fields
+- keep event routing metadata synchronized from one VDL source of truth
+- expose a small runtime event catalog for dispatching or introspection
 
-1. Use this repository as a template.
-2. Install dependencies:
+The generated file has zero dependencies and works in any JavaScript runtime (Node.js, Deno, Bun, browsers, edge workers).
 
-```bash
-npm install
-```
+## Quick Start
 
-3. Implement your plugin in `src/index.ts`.
-4. Run `npm run check` while iterating.
-5. Run `npm run build` to produce `dist/index.js`.
-
-Your plugin entrypoint receives:
-
-- `input.version` the VDL version.
-- `input.options` plugin options from `vdl.config.vdl`.
-- `input.ir` the fully prepared VDL IR used to generate files.
-
-Your plugin returns generated `files`, and it can also return `errors` when generation should stop.
-
-## NPM scripts
-
-- `npm run build` bundles `src/index.ts` into `dist/index.js`.
-- `npm run check` runs TypeScript type checks for the plugin.
-- `npm run format` formats the repository using dprint and Biome.
-- `npm run lint` validates formatting and lint rules using dprint and Biome.
-- `npm run test` runs the Vitest suite. It is configured to pass even if you have not added tests yet.
-- `npm run ci` runs the full verification flow: lint, type-check, test, and build.
-
-## Code generation
-
-This template already includes [`@varavel/gen`](https://www.npmjs.com/package/@varavel/gen).
-
-It is useful when you want to build generated files with predictable indentation and block structure instead of manually concatenating strings.
-
-```ts
-import { newGenerator } from "@varavel/gen";
-
-const g = newGenerator();
-
-g.line("export interface User {");
-g.block(() => {
-  g.line("id: string;");
-  g.line("name: string;");
-});
-g.line("}");
-
-const content = g.toString();
-```
-
-If you want real plugin examples, here is the code for two official plugins:
-
-- [`varavelio/vdl-plugin-go`](https://github.com/varavelio/vdl-plugin-go)
-- [`varavelio/vdl-plugin-ts`](https://github.com/varavelio/vdl-plugin-ts)
-
-## Devcontainer and CI
-
-The included devcontainer installs dependencies on creation and gives you a consistent environment with the expected tooling already configured.
-
-If you want to use it, check the [Dev Containers documentation](https://code.visualstudio.com/docs/devcontainers/containers). You need Docker and VS Code (or fork like cursor, antigravity, etc), and using them is strongly recommended because they remove most local setup friction and make the development workflow much easier.
-
-The GitHub workflow uses the devcontainer in CI as well (without you having to do anything extra), so local development and CI stay aligned.
-
-## Releasing and deployment
-
-VDL plugins do not need to be published to npm.
-
-Release flow:
-
-1. Build your plugin with `npm run build`.
-2. Commit your source code and the generated `dist/index.js` file.
-3. Create a GitHub release with a tag such as `v0.1.0` after `dist/index.js` is already committed.
-4. That is enough for VDL users to consume the plugin from GitHub.
-
-This template intentionally keeps `dist/` out of `.gitignore` because `dist/index.js` is part of the distributable plugin.
-
-Example plugin reference in VDL config (`vdl.config.vdl`):
+1. Generate your TypeScript payload types with `varavelio/vdl-plugin-ts`.
+2. Add this plugin to your `vdl.config.vdl` for event routing artifacts:
 
 ```vdl
 const config = {
   version 1
   plugins [
     {
-      src "varavelio/vdl-plugin-go@v0.1.0" // GitHub username/repo@version
+      src "varavelio/vdl-plugin-ts@<version>" // Use a version from plugin releases
       schema "./schema.vdl"
-      outDir "./gen/go"
+      outDir "./gen"
+    }
+    {
+      src "varavelio/vdl-plugin-events-ts@<version>" // Use a version from plugin releases
+      schema "./schema.vdl"
+      outDir "./gen"
+    }
+  ]
+}
+```
+
+3. Run your normal VDL generation command:
+
+```bash
+vdl generate
+```
+
+4. Check the generated output in `./gen`:
+
+- `events.ts`
+
+## Plugin Options
+
+All options are optional.
+
+| Option    | Type     | Default       | What it changes                                                              |
+| --------- | -------- | ------------- | ---------------------------------------------------------------------------- |
+| `outFile` | `string` | `"events.ts"` | Sets the generated TypeScript filename inside `outDir`. Must end with `.ts`. |
+
+Example with all options:
+
+```vdl
+const config = {
+  version 1
+  plugins [
+    {
+      src "varavelio/vdl-plugin-events-ts@<version>" // Use a version from plugin releases
+      schema "./schema.vdl"
+      outDir "./gen"
       options {
-        // Additional options for the plugin can be specified here
+        outFile "billing-events.ts"
       }
     }
   ]
 }
 ```
 
-## License note
+## Event Annotation Model
 
-Using MIT for your plugin is not mandatory, but it is strongly appreciated. A permissive license makes it easier for more people to adopt, study, improve, and contribute back to the ecosystem, which helps everyone benefit from better VDL plugins.
+This plugin follows the VDL `@event` specification (VPP-4):
+
+- Spec: https://vdl.varavel.com/docs/protocols/events/
+
+Core rules enforced by this plugin (via `assertValidIrForEvents`):
+
+- `@event("subject.template")` must be attached to a top-level object type
+- placeholders use `{fieldName}` syntax
+- placeholders must match top-level payload fields exactly
+- placeholders must point to top-level primitive fields only
+- placeholder fields must be required
+
+Example:
+
+```vdl
+@event("auth.user_created.{userId}")
+type UserCreatedEvent {
+  userId string
+  email string
+  createdAt datetime
+}
+```
+
+## What You Get
+
+- `build<Event>Subject`: exported typed subject builder per event
+- `VDLEventMetadata`: shared metadata interface (`name`, `subjectTemplate`, `buildSubject`)
+- `VDLEventCatalog`: interface grouping per-event metadata by event name
+- `VDLEvents`: constant holding the fully typed event catalog
+
+All generated events are consolidated into a single TypeScript file.
+
+## Generated TypeScript Shape
+
+Given this schema:
+
+```vdl
+@event("auth.user_created.{userId}")
+type UserCreatedEvent {
+  userId string
+  email string
+  createdAt datetime
+}
+```
+
+The generated TypeScript output is similar to (comments trimmed for brevity):
+
+```ts
+export function buildUserCreatedEventSubject(userId: string): string {
+  return `auth.user_created.${userId}`;
+}
+
+export interface VDLEventMetadata<TBuildSubject extends (...args: any[]) => string> {
+  name: string;
+  subjectTemplate: string;
+  buildSubject: TBuildSubject;
+}
+
+export interface VDLEventCatalog {
+  UserCreatedEvent: VDLEventMetadata<(userId: string) => string>;
+}
+
+export const VDLEvents: VDLEventCatalog = {
+  UserCreatedEvent: {
+    name: "UserCreatedEvent",
+    subjectTemplate: "auth.user_created.{userId}",
+    buildSubject: buildUserCreatedEventSubject,
+  },
+};
+```
+
+Each builder and catalog entry carries JSDoc with the event name and subject template. Deprecated events carry `@deprecated` tags. External access goes through the catalog's typed `buildSubject` fields or the exported builder functions directly.
+
+## Type Mapping
+
+| VDL        | TypeScript output |
+| ---------- | ----------------- |
+| `string`   | `string`          |
+| `int`      | `number`          |
+| `float`    | `number`          |
+| `bool`     | `boolean`         |
+| `datetime` | `Date`            |
+
+Named placeholder field types are resolved to their underlying VDL primitive type when generating builder function parameters.
+
+## Subject Builder Behavior
+
+- String placeholders interpolate directly inside template literals.
+- Numeric and boolean placeholders interpolate with implicit string conversion.
+- `datetime` placeholders call `.toISOString()` on the `Date` value.
+- Repeated placeholders appear only once in the builder signature, in first-appearance order.
+- Static subjects without placeholders generate zero-argument builders returning a string literal.
+- Static subject text is escaped for safe interpolation inside template literals.
+
+## Validation Behavior
+
+Generation fails with structured plugin diagnostics when:
+
+- `@event` is used on a non-object type
+- `@event` is missing its string subject argument
+- a subject placeholder references a missing field
+- a subject placeholder references a non-primitive field
+- a subject placeholder references an optional field
+- `outFile` does not end with `.ts`
+
+## Notes
+
+- If the schema contains no valid `@event` types, the plugin emits no files.
+- The plugin only generates subject builders and event inventory metadata.
+- The plugin does not generate payload models, enums, constants, or validation helpers.
+- Generate payload contracts with [`varavelio/vdl-plugin-ts`](https://github.com/varavelio/vdl-plugin-ts).
+- Generated code targets strict ES6 (`--target es6 --strict`) with no imports, so it type-checks and runs anywhere.
+- This plugin is intended specifically for the VDL event specification, not full TypeScript model generation.
 
 ## License
 
