@@ -149,7 +149,7 @@ describe("generate", () => {
     const file = getOnlyGeneratedFile(output);
     expect(file.path).toBe("events.ts");
     expect(file.content).toContain(
-      "export function buildUserCreatedEventSubject(userId: string): string {",
+      "function buildUserCreatedEventSubject(userId: string): string {",
     );
     // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting generated template literal
     expect(file.content).toContain("return `auth.user_created.${userId}`;");
@@ -157,6 +157,9 @@ describe("generate", () => {
     expect(file.content).toContain(
       "export const VDLEvents: VDLEventCatalog = {",
     );
+    expect(file.content).toContain("buildSubject: (userId: string) => string;");
+    expect(file.content).not.toContain("export function build");
+    expect(file.content).not.toContain("VDLEventMetadata");
     expect(file.content).toContain(
       'subjectTemplate: "auth.user_created.{userId}",',
     );
@@ -184,7 +187,7 @@ describe("generate", () => {
 
     const file = getOnlyGeneratedFile(output);
     expect(file.content).toContain(
-      "export function buildSystemReadyEventSubject(): string {",
+      "function buildSystemReadyEventSubject(): string {",
     );
     expect(file.content).toContain('return "system.ready";');
   });
@@ -211,7 +214,7 @@ describe("generate", () => {
 
     const file = getOnlyGeneratedFile(output);
     expect(file.content).toContain(
-      "export function buildTenantAuditEventSubject(tenantId: string): string {",
+      "function buildTenantAuditEventSubject(tenantId: string): string {",
     );
     expect(file.content).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting generated template literal
@@ -247,7 +250,7 @@ describe("generate", () => {
 
     const file = getOnlyGeneratedFile(output);
     expect(file.content).toContain(
-      "export function buildPrimitiveSubjectEventSubject(name: string, count: number, amount: number, active: boolean, occurredAt: Date): string {",
+      "function buildPrimitiveSubjectEventSubject(name: string, count: number, amount: number, active: boolean, occurredAt: Date): string {",
     );
     expect(file.content).toContain(
       // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting generated template literal
@@ -279,7 +282,7 @@ describe("generate", () => {
 
     const file = getOnlyGeneratedFile(output);
     expect(file.content).toContain(
-      "export function buildTenantCreatedEventSubject(tenantId: string): string {",
+      "function buildTenantCreatedEventSubject(tenantId: string): string {",
     );
     // biome-ignore lint/suspicious/noTemplateCurlyInString: asserting generated template literal
     expect(file.content).toContain("return `tenants.${tenantId}.created`;");
@@ -314,7 +317,7 @@ describe("generate", () => {
 
     const file = getOnlyGeneratedFile(output);
     expect(file.content).toContain(
-      "export function buildComplexPayloadEventSubject(tenantId: string): string {",
+      "function buildComplexPayloadEventSubject(tenantId: string): string {",
     );
     expect(file.content).not.toContain("export interface ComplexPayloadEvent");
     expect(file.content).not.toContain("ActorId");

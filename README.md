@@ -133,7 +133,7 @@ type UserCreatedEvent {
 ## What You Get
 
 - `build<Event>Subject`: exported typed subject builder per event
-- `VDLEventMetadata`: shared metadata interface (`name`, `subjectTemplate`, `buildSubject`)
+- Per-event entries with `name`, `subjectTemplate`, and typed `buildSubject`
 - `VDLEventCatalog`: interface grouping per-event metadata by event name
 - `VDLEvents`: constant holding the fully typed event catalog
 
@@ -155,18 +155,12 @@ type UserCreatedEvent {
 The generated TypeScript output is similar to (comments trimmed for brevity):
 
 ```ts
-export function buildUserCreatedEventSubject(userId: string): string {
-  return `auth.user_created.${userId}`;
-}
-
-export interface VDLEventMetadata<TBuildSubject extends (...args: any[]) => string> {
-  name: string;
-  subjectTemplate: string;
-  buildSubject: TBuildSubject;
-}
-
 export interface VDLEventCatalog {
-  UserCreatedEvent: VDLEventMetadata<(userId: string) => string>;
+  UserCreatedEvent: {
+    name: string;
+    subjectTemplate: string;
+    buildSubject: (userId: string) => string;
+  };
 }
 
 export const VDLEvents: VDLEventCatalog = {
@@ -176,9 +170,13 @@ export const VDLEvents: VDLEventCatalog = {
     buildSubject: buildUserCreatedEventSubject,
   },
 };
+
+function buildUserCreatedEventSubject(userId: string): string {
+  return `auth.user_created.${userId}`;
+}
 ```
 
-Each builder and catalog entry carries JSDoc with the event name and subject template. Deprecated events carry `@deprecated` tags. External access goes through the catalog's typed `buildSubject` fields or the exported builder functions directly.
+Each catalog entry carries JSDoc with the event name and subject template. Deprecated events carry `@deprecated` tags. External access goes through the catalog's typed `buildSubject` fields only.
 
 ## Type Mapping
 
